@@ -1,9 +1,30 @@
-import { setUser, readConfig } from './config.js';
+import { CommandsRegistry, registerCommand, runCommand } from './commands/commands.js';
+import { handlerLogin } from './commands/users.js';
+import { argv } from 'node:process';
+import process from 'node:process';
 
 function main() {
-  setUser("CJ")
-  const tempConfig = readConfig();
-  console.log(tempConfig);
+  const args = argv.slice(2);
+  if (args.length === 0) {
+    console.log("Not enough arguments")
+    process.exit(1)
+  }
+
+  const cmdName = args[0];
+  const cmdArgs = args.slice(1);
+  const registry: CommandsRegistry = {}
+  registerCommand(registry, "login", handlerLogin)
+
+  try {
+    runCommand(registry, cmdName, ...cmdArgs)
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error ${cmdName}: ${err.message}`)
+    } else {
+      console.error(`Error ${cmdName}: ${err}`)
+    }
+    process.exit(1)
+  }
 }
 
 main();
