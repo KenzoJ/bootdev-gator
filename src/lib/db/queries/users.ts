@@ -19,3 +19,12 @@ export async function resetUser(): Promise<void> {
   await db.delete(users)
 
 }
+
+export async function getRegisteredUsers(): Promise<any> {
+  const result = await db
+    .select({
+      users: users.name
+    })
+    .from(users);
+  return result;
+}

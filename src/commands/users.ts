@@ -1,5 +1,6 @@
-import { setUser } from "src/config";
-import { createUser, getUser, resetUser } from "../lib/db/queries/users";
+import { setUser, readConfig } from "src/config";
+import { createUser, getUser, resetUser, getRegisteredUsers } from "../lib/db/queries/users";
+
 
 export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
   if (args.length !== 1) {
@@ -31,7 +32,24 @@ export async function handlerRegister(cmdName: string, ...args: string[]): Promi
   console.log(`${args[0]} is set as a user in the config`)
 }
 
-export async function handlerResetUsers(cmdName: string): Promise<void> {
+export async function handlerResetUsers(): Promise<void> {
   await resetUser()
   console.log("reset success!")
+}
+
+export async function handlerGetUsers(): Promise<void> {
+  const allUsers = await getRegisteredUsers()
+  const loggedIn = readConfig().currentUserName
+
+  if (allUsers.length === 0) {
+    throw new Error("No registered users to get")
+  }
+  for (let i = 0; i < allUsers.length; i++) {
+    let currUser = allUsers[i].users
+    if (currUser === loggedIn) {
+      console.log(`${currUser} (current)`)
+    } else {
+      console.log(`${currUser}`)
+    }
+  }
 }
