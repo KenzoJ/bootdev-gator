@@ -20,7 +20,7 @@ async function main() {
   registerCommand(registry, "reset", handlerResetUsers);
   registerCommand(registry, "users", handlerGetUsers)
   registerCommand(registry, "agg", handlerAggregator)
-  registerCommand(registry, "feed", handlerFeed)
+  registerCommand(registry, "addfeed", handlerFeed)
 
   try {
     await runCommand(registry, cmdName, ...cmdArgs)

@@ -28,3 +28,4 @@ export async function getRegisteredUsers(): Promise<any> {
     .from(users);
   return result;
 }
+
