@@ -1,7 +1,6 @@
 import { setUser, readConfig } from "src/config";
 import { createUser, getUser, resetUser, getRegisteredUsers } from "../lib/db/queries/users";
 
-
 export async function handlerLogin(cmdName: string, ...args: string[]): Promise<void> {
   if (args.length !== 1) {
     throw new Error(`usage: ${cmdName} <name>`);
@@ -21,14 +20,12 @@ export async function handlerRegister(cmdName: string, ...args: string[]): Promi
     throw new Error(`usage: ${cmdName} <name>`);
   }
   const newName = args[0]
-  //check if user already created
   if (await getUser(newName)) {
     throw new Error(`${newName} already registered`)
   }
   await createUser(args[0]);
   setUser(newName)
-  //setUser(args[0]);
-  console.log(`${args[0]} is created as a user`)
+  console.log(`${args[0]} is created as a user in the db`)
   console.log(`${args[0]} is set as a user in the config`)
 }
 

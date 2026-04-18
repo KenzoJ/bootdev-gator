@@ -1,5 +1,5 @@
 import { readConfig } from "src/config";
-import { createFeed } from "src/lib/db/queries/feeds";
+import { createFeed, getAllFeeds } from "src/lib/db/queries/feeds";
 import { getUser } from "src/lib/db/queries/users";
 import { Feed, User } from "src/lib/db/schema";
 
@@ -13,18 +13,20 @@ export async function handlerFeed(
   }
   const loggedIn = readConfig().currentUserName
   const user = await getUser(loggedIn)
+
+  // console.log(`user: ${JSON.stringify(user)}`)
   if (!user) {
     throw new Error(`User not found`);
   }
 
   const feed = await createFeed(args[0], args[1], user.id)
-
   if (!feed) {
-    console.log("Feed created successfully:");
-    printFeed(feed, user)
-  } else {
     throw new Error(`Feed create error`)
   }
+  console.log("Feed created successfully:");
+  printFeed(feed, user)
+  //console.log(`What's this feed: ${feed}`)
+
 
 }
 
@@ -35,5 +37,19 @@ function printFeed(feed: Feed, user: User) {
   console.log(`* name:          ${feed.name}`);
   console.log(`* URL:           ${feed.url}`);
   console.log(`* User:          ${user.name}`);
-
 }
+
+export async function handlerFeeds(): Promise<void> {
+  const feeds = await getAllFeeds()
+  if (feeds.length === 0) {
+    console.log(`no feeds added`)
+  } else {
+    for (let i = 0; i < feeds.length; i++) {
+      console.log(`feed #${i}`)
+      console.log(feeds[i])
+    }
+
+  }
+}
+
+

@@ -1,7 +1,7 @@
 import { CommandsRegistry, registerCommand, runCommand } from './commands/commands.js';
 import { handlerGetUsers, handlerLogin, handlerRegister, handlerResetUsers } from './commands/users.js';
 import { handlerAggregator } from "./commands/aggregate.js"
-import { handlerFeed } from "./commands/feed.js"
+import { handlerFeed, handlerFeeds } from "./commands/feed.js"
 import { argv } from 'node:process';
 import process from 'node:process';
 
@@ -21,17 +21,21 @@ async function main() {
   registerCommand(registry, "users", handlerGetUsers)
   registerCommand(registry, "agg", handlerAggregator)
   registerCommand(registry, "addfeed", handlerFeed)
+  registerCommand(registry, "feeds", handlerFeeds)
+
 
   try {
     await runCommand(registry, cmdName, ...cmdArgs)
   } catch (err) {
     if (err instanceof Error) {
       console.error(`Error ${cmdName}: ${err.message}`)
+      console.error(err)
     } else {
       console.error(`Error ${cmdName}: ${err}`)
     }
     process.exit(1)
   }
+
   process.exit(0)
 }
 

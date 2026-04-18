@@ -20,9 +20,11 @@ export const feeds = pgTable("feeds", {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
-  name: text("name").notNull().unique(),
-  url: text("url").notNull().unique(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
 })
 
-export type Feed = typeof feeds.$inferSelect; 
+export type Feed = typeof feeds.$inferSelect;
