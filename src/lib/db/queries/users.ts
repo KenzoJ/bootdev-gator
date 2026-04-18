@@ -29,3 +29,7 @@ export async function getRegisteredUsers(): Promise<any> {
   return result;
 }
 
+export async function getUserId(name: string) {
+  const [result] = await db.select().from(users).where(eq(users.name, name))
+  return result
+}

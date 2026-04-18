@@ -1,7 +1,7 @@
 import { CommandsRegistry, registerCommand, runCommand } from './commands/commands.js';
 import { handlerGetUsers, handlerLogin, handlerRegister, handlerResetUsers } from './commands/users.js';
 import { handlerAggregator } from "./commands/aggregate.js"
-import { handlerFeed, handlerFeeds } from "./commands/feed.js"
+import { handlerFeed, handlerFeeds, handlerFollow, handlerFollowing } from "./commands/feed.js"
 import { argv } from 'node:process';
 import process from 'node:process';
 
@@ -21,7 +21,9 @@ async function main() {
   registerCommand(registry, "users", handlerGetUsers)
   registerCommand(registry, "agg", handlerAggregator)
   registerCommand(registry, "addfeed", handlerFeed)
-  registerCommand(registry, "feeds", handlerFeeds)
+  registerCommand(registry, "feeds", handlerFeeds);
+  registerCommand(registry, "following", handlerFollowing);
+  registerCommand(registry, "follow", handlerFollow);
 
 
   try {
